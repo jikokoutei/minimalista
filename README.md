@@ -13,7 +13,7 @@ Minimalista is a clean browser-extension workspace for saving useful links, arra
 - Delete bookmarks or whole boards when you no longer need them.
 - Restore recently removed links from trash.
 - Keep a compact to-do list beside your bookmarks.
-- Customize theme, wallpaper, panel visibility, active page color, and link button color.
+- Customize theme, wallpaper presets, uploaded wallpaper images, panel visibility, active page color, and link button color.
 - Persist user changes with `chrome.storage.local` in the extension and `localStorage` during local HTML preview.
 
 ## Install As A Browser Extension
@@ -84,7 +84,7 @@ The old Vite/React files are still in the repository for reference, but they are
 4. Set panel visibility.
 5. Set panels to visible, semi visible, or pure transparent.
 6. Pick active page and link button colors.
-7. Choose a wallpaper preset or paste an image URL.
+7. Choose a wallpaper preset, paste an image URL, or upload a JPG/PNG wallpaper.
 
 ## Project Structure
 
@@ -101,7 +101,7 @@ manifest.json   Extension manifest
 
 - The extension uses Manifest V3.
 - `storage` permission is required so user changes survive popup reloads.
-- Remote wallpaper URLs are stored as user settings; custom images must be reachable by the browser.
+- Remote wallpaper URLs and uploaded JPG/PNG wallpaper images are stored as user settings.
 - No npm install or build step is required for the plain HTML extension.
 - The toolbar icon opens Minimalista as a full tab instead of a small popup.
 - Minimalista replaces the browser new tab page while the extension is enabled.
