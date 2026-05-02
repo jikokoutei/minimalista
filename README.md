@@ -2,7 +2,10 @@
 
 Minimalista is a clean browser-extension workspace for saving useful links, arranging them into boards, tracking a short to-do list, and personalizing the popup with themes, wallpaper, and accent colors. The extension now runs as a plain HTML/CSS/JS app, so npm is not required to load it in the browser.
 
-![Minimalista extension UI](assets/minimalista-ui.png)
+<img width="1080" alt="image" src="https://github.com/user-attachments/assets/3b55a942-5601-4a14-b2f5-30dec8b0a8e3" />
+
+
+
 
 ## Features
 
