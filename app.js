@@ -129,10 +129,16 @@ function shortUrlLabel(url) {
 function faviconUrl(url) {
   try {
     const parsed = new URL(normalizeUrl(url));
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=32`;
+    return `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(parsed.origin)}&sz=64`;
   } catch {
     return "";
   }
+}
+
+function fallbackFaviconUrl(label) {
+  const initial = (String(label).trim()[0] || "?").toUpperCase().replace(/[<&>"]/g, "") || "?";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#334155"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="30" font-weight="700">${initial}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
 function searchTarget(value) {
@@ -274,11 +280,7 @@ function renderBoard(page, board) {
                   (link) => `
                     <div class="link-card ${compactLinks ? "compact" : ""}" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
                       <a class="link-main" href="${escapeAttribute(normalizeUrl(link.url))}" title="${escapeAttribute(link.title)}" target="_blank" rel="noreferrer">
-                        ${
-                          compactLinks
-                            ? `<img class="link-favicon" src="${escapeAttribute(faviconUrl(link.url))}" alt="" loading="lazy" />`
-                            : ""
-                        }
+                        <img class="link-favicon" src="${escapeAttribute(faviconUrl(link.url))}" data-fallback-src="${escapeAttribute(fallbackFaviconUrl(link.title || link.url))}" alt="" loading="lazy" referrerpolicy="no-referrer" />
                         <span>${escapeHtml(link.title)}</span>
                       </a>
                       ${compactLinks ? "" : `<p class="link-url" title="${escapeAttribute(link.url)}">${escapeHtml(shortUrlLabel(link.url))}</p>`}
@@ -294,6 +296,8 @@ function renderBoard(page, board) {
 }
 
 function bindEvents() {
+  bindFaviconFallbacks();
+
   document.querySelectorAll("[data-action]").forEach((element) => {
     element.addEventListener("click", handleAction);
   });
@@ -331,6 +335,17 @@ function bindEvents() {
       if (draggedLink) {
         moveLink(draggedLink.boardId, targetBoardId, draggedLink.linkId);
         draggedLink = null;
+      }
+    });
+  });
+}
+
+function bindFaviconFallbacks() {
+  document.querySelectorAll(".link-favicon").forEach((image) => {
+    image.addEventListener("error", () => {
+      const fallback = image.dataset.fallbackSrc || "";
+      if (fallback && image.getAttribute("src") !== fallback) {
+        image.setAttribute("src", fallback);
       }
     });
   });
