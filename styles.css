@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Josefin Slab";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/josefin-slab-400.ttf") format("truetype");
+}
+
 :root {
   color-scheme: dark;
   font-family: "Josefin Slab", Georgia, "Times New Roman", serif;
