@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "josefin-slab-400";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/josefin-slab-400.ttf") format("truetype");
+}
+
+html {
+  font-family: "josefin-slab-400", Georgia, "Times New Roman", serif;
+}
+
 body {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "josefin-slab-400", Georgia, "Times New Roman", serif;
 }
 
 @keyframes pop {
