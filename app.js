@@ -53,6 +53,7 @@ function initialState() {
     panelVisibility: "semi",
     activePageColor: "#7c3aed",
     linkButtonColor: "#8b5cf6",
+    compactLinkCards: false,
   };
 }
 
@@ -122,6 +123,15 @@ function shortUrlLabel(url) {
     return `${parsed.hostname}${firstPath}`;
   } catch {
     return url;
+  }
+}
+
+function faviconUrl(url) {
+  try {
+    const parsed = new URL(normalizeUrl(url));
+    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=32`;
+  } catch {
+    return "";
   }
 }
 
@@ -244,6 +254,8 @@ function render() {
 }
 
 function renderBoard(page, board) {
+  const compactLinks = Boolean(state.compactLinkCards);
+
   return `
     <article class="board" draggable="${state.boardReorderEnabled}" data-board-id="${board.id}" data-page-id="${page.id}">
       <div class="board-header">
@@ -260,10 +272,17 @@ function renderBoard(page, board) {
             ? board.links
                 .map(
                   (link) => `
-                    <div class="link-card" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
-                      <a href="${escapeAttribute(normalizeUrl(link.url))}" title="${escapeAttribute(link.title)}" target="_blank" rel="noreferrer">${escapeHtml(link.title)}</a>
-                      <p class="link-url" title="${escapeAttribute(link.url)}">${escapeHtml(shortUrlLabel(link.url))}</p>
-                      <button class="remove-link" data-action="remove-link" data-page-id="${page.id}" data-board-id="${board.id}" data-link-id="${link.id}">Delete bookmark</button>
+                    <div class="link-card ${compactLinks ? "compact" : ""}" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
+                      <a class="link-main" href="${escapeAttribute(normalizeUrl(link.url))}" title="${escapeAttribute(link.title)}" target="_blank" rel="noreferrer">
+                        ${
+                          compactLinks
+                            ? `<img class="link-favicon" src="${escapeAttribute(faviconUrl(link.url))}" alt="" loading="lazy" />`
+                            : ""
+                        }
+                        <span>${escapeHtml(link.title)}</span>
+                      </a>
+                      ${compactLinks ? "" : `<p class="link-url" title="${escapeAttribute(link.url)}">${escapeHtml(shortUrlLabel(link.url))}</p>`}
+                      <button class="remove-link" title="Delete bookmark" data-action="remove-link" data-page-id="${page.id}" data-board-id="${board.id}" data-link-id="${link.id}">${compactLinks ? icon("trash") : "Delete bookmark"}</button>
                     </div>`
                 )
                 .join("")
@@ -617,6 +636,12 @@ function openSettings() {
           </button>
         </section>
         <section class="settings-section">
+          <p class="section-label">Bookmark display</p>
+          <button class="toggle-button ${state.compactLinkCards ? "active" : ""}" data-setting="compactLinkCards">
+            ${state.compactLinkCards ? "Icon + title" : "Title + URL"}
+          </button>
+        </section>
+        <section class="settings-section">
           <p class="section-label">Panel visibility</p>
           <div class="button-row">
             <button class="toggle-button ${state.panelVisibility === "visible" ? "active" : ""}" data-setting="panelVisibility" data-value="visible">Visible</button>
@@ -673,6 +698,7 @@ function handleSetting(event) {
 
   if (setting === "theme") state.themeIndex = Number(target.dataset.value);
   if (setting === "boardReorder") state.boardReorderEnabled = !state.boardReorderEnabled;
+  if (setting === "compactLinkCards") state.compactLinkCards = !state.compactLinkCards;
   if (setting === "panelVisibility") state.panelVisibility = target.dataset.value;
   if (setting === "wallpaperVisibility") state.wallpaperVisibility = target.dataset.value;
   if (setting === "activePageColor") state.activePageColor = target.value;

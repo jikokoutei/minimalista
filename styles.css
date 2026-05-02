@@ -405,7 +405,7 @@ h1 {
 
 .main {
   flex: 1;
-  min-width: 100%;
+  min-width: 100vh;
   max-height: calc(100vh - 40px);
   overflow-x: hidden;
   overflow-y: auto;
@@ -474,16 +474,48 @@ h1 {
   transform: translateY(-1px);
 }
 
-.link-card a {
-  display: block;
+.link-main {
+  display: flex;
   min-width: 0;
+  align-items: center;
+  gap: 8px;
   overflow: hidden;
   color: #f8fafc;
   font-size: 15px;
   font-weight: 700;
   text-decoration: none;
+}
+
+.link-main span {
+  min-width: 0;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.link-favicon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.link-card.compact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 9px 9px 10px;
+}
+
+.link-card.compact .remove-link {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
 
 .link-url {
