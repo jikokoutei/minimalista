@@ -405,7 +405,7 @@ h1 {
 
 .main {
   flex: 1;
-  min-width: 0;
+  min-width: 100%;
   max-height: calc(100vh - 40px);
   overflow-x: hidden;
   overflow-y: auto;
