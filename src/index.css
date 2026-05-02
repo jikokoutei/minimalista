@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-pop {
+  animation: pop 220ms ease-out;
+}
