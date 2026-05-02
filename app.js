@@ -53,6 +53,7 @@ function initialState() {
     panelVisibility: "semi",
     activePageColor: "#7c3aed",
     linkButtonColor: "#8b5cf6",
+    compactLinkCards: false,
   };
 }
 
@@ -104,6 +105,36 @@ function normalizeUrl(url) {
   return /^https?:\/\//i.test(value) ? value : `https://${value}`;
 }
 
+function isWallpaperDataUrl(url) {
+  return /^data:image\/(png|jpe?g);base64,/i.test(url.trim());
+}
+
+function wallpaperSource(url) {
+  const value = url.trim();
+  if (!value) return "";
+  return isWallpaperDataUrl(value) ? value : normalizeUrl(value);
+}
+
+function shortUrlLabel(url) {
+  try {
+    const parsed = new URL(normalizeUrl(url));
+    const path = parsed.pathname.replace(/^\/|\/$/g, "");
+    const firstPath = path ? `/${path.split("/")[0]}` : "";
+    return `${parsed.hostname}${firstPath}`;
+  } catch {
+    return url;
+  }
+}
+
+function faviconUrl(url) {
+  try {
+    const parsed = new URL(normalizeUrl(url));
+    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=32`;
+  } catch {
+    return "";
+  }
+}
+
 function searchTarget(value) {
   const term = value.trim();
   if (!term) return "";
@@ -145,11 +176,12 @@ function render() {
   document.documentElement.style.setProperty("--active-color", state.activePageColor);
   document.documentElement.style.setProperty("--link-color", state.linkButtonColor);
 
-  const wallpaperStyle = state.wallpaperUrl
-    ? `style="background-image:url('${normalizeUrl(state.wallpaperUrl).replaceAll("'", "%27")}')"`
+  const wallpaperUrl = wallpaperSource(state.wallpaperUrl);
+  const wallpaperStyle = wallpaperUrl
+    ? `style="background-image:url('${wallpaperUrl.replaceAll("'", "%27")}')"`
     : "";
   const overlayWallpaper = state.wallpaperUrl ? `wallpaper-${state.wallpaperVisibility}` : "";
-  const panelClass = state.panelVisibility === "visible" ? "visible" : "";
+  const panelClass = ["visible", "pure"].includes(state.panelVisibility) ? state.panelVisibility : "";
 
   document.querySelector("#app").innerHTML = `
     <div class="shell">
@@ -189,11 +221,14 @@ function render() {
                 .slice(0, 6)
                 .map(
                   (todo) => `
-                    <label class="todo-item ${todo.done ? "done" : ""}">
-                      <input type="checkbox" data-action="toggle-todo" data-todo-id="${todo.id}" ${todo.done ? "checked" : ""} />
-                      <span>${escapeHtml(todo.text)}</span>
-                      <button class="todo-remove" type="button" data-action="delete-todo" data-todo-id="${todo.id}">x</button>
-                    </label>`
+                    <div class="todo-item ${todo.done ? "done" : ""}">
+                      <label class="todo-toggle">
+                        <input class="todo-checkbox" type="checkbox" data-action="toggle-todo" data-todo-id="${todo.id}" ${todo.done ? "checked" : ""} />
+                        <span class="todo-check" aria-hidden="true"></span>
+                        <span class="todo-text">${escapeHtml(todo.text)}</span>
+                      </label>
+                      <button class="todo-remove" type="button" title="Delete task" data-action="delete-todo" data-todo-id="${todo.id}">${icon("trash")}</button>
+                    </div>`
                 )
                 .join("")}
             </div>
@@ -219,6 +254,8 @@ function render() {
 }
 
 function renderBoard(page, board) {
+  const compactLinks = Boolean(state.compactLinkCards);
+
   return `
     <article class="board" draggable="${state.boardReorderEnabled}" data-board-id="${board.id}" data-page-id="${page.id}">
       <div class="board-header">
@@ -235,10 +272,17 @@ function renderBoard(page, board) {
             ? board.links
                 .map(
                   (link) => `
-                    <div class="link-card" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
-                      <a href="${escapeAttribute(normalizeUrl(link.url))}" target="_blank" rel="noreferrer">${escapeHtml(link.title)}</a>
-                      <p class="link-url">${escapeHtml(link.url)}</p>
-                      <button class="remove-link" data-action="remove-link" data-page-id="${page.id}" data-board-id="${board.id}" data-link-id="${link.id}">Delete bookmark</button>
+                    <div class="link-card ${compactLinks ? "compact" : ""}" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
+                      <a class="link-main" href="${escapeAttribute(normalizeUrl(link.url))}" title="${escapeAttribute(link.title)}" target="_blank" rel="noreferrer">
+                        ${
+                          compactLinks
+                            ? `<img class="link-favicon" src="${escapeAttribute(faviconUrl(link.url))}" alt="" loading="lazy" />`
+                            : ""
+                        }
+                        <span>${escapeHtml(link.title)}</span>
+                      </a>
+                      ${compactLinks ? "" : `<p class="link-url" title="${escapeAttribute(link.url)}">${escapeHtml(shortUrlLabel(link.url))}</p>`}
+                      <button class="remove-link" title="Delete bookmark" data-action="remove-link" data-page-id="${page.id}" data-board-id="${board.id}" data-link-id="${link.id}">${compactLinks ? icon("trash") : "Delete bookmark"}</button>
                     </div>`
                 )
                 .join("")
@@ -566,6 +610,10 @@ function moveBoard(sourceBoardId, targetBoardId) {
 }
 
 function openSettings() {
+  const uploadedWallpaper = isWallpaperDataUrl(state.wallpaperUrl);
+  const wallpaperInputValue = uploadedWallpaper ? "" : state.wallpaperUrl;
+  const wallpaperPlaceholder = uploadedWallpaper ? "Uploaded image selected" : "https://example.com/wallpaper.jpg";
+
   openModal(`
     <div class="modal">
       <h2>Settings</h2>
@@ -588,10 +636,17 @@ function openSettings() {
           </button>
         </section>
         <section class="settings-section">
+          <p class="section-label">Bookmark display</p>
+          <button class="toggle-button ${state.compactLinkCards ? "active" : ""}" data-setting="compactLinkCards">
+            ${state.compactLinkCards ? "Icon + title" : "Title + URL"}
+          </button>
+        </section>
+        <section class="settings-section">
           <p class="section-label">Panel visibility</p>
           <div class="button-row">
             <button class="toggle-button ${state.panelVisibility === "visible" ? "active" : ""}" data-setting="panelVisibility" data-value="visible">Visible</button>
             <button class="toggle-button ${state.panelVisibility === "semi" ? "active" : ""}" data-setting="panelVisibility" data-value="semi">Semi visible</button>
+            <button class="toggle-button ${state.panelVisibility === "pure" ? "active" : ""}" data-setting="panelVisibility" data-value="pure">Pure transparent</button>
           </div>
         </section>
         <section class="settings-section">
@@ -615,7 +670,11 @@ function openSettings() {
               )
               .join("")}
           </div>
-          <input data-setting-input="wallpaperUrl" value="${escapeAttribute(state.wallpaperUrl)}" placeholder="https://example.com/wallpaper.jpg" />
+          <input data-setting-input="wallpaperUrl" value="${escapeAttribute(wallpaperInputValue)}" placeholder="${wallpaperPlaceholder}" />
+          <label class="upload-wallpaper">
+            <span>Upload JPG or PNG</span>
+            <input type="file" accept="image/png,image/jpeg" data-wallpaper-upload />
+          </label>
           <div class="modal-actions">
             <button class="primary-button" data-setting="applyWallpaper">Apply URL</button>
             <button class="secondary-button" data-setting="removeWallpaper">Remove</button>
@@ -630,6 +689,7 @@ function openSettings() {
     element.addEventListener("click", handleSetting);
     element.addEventListener("input", handleSetting);
   });
+  document.querySelector("[data-wallpaper-upload]").addEventListener("change", handleWallpaperUpload);
 }
 
 function handleSetting(event) {
@@ -638,6 +698,7 @@ function handleSetting(event) {
 
   if (setting === "theme") state.themeIndex = Number(target.dataset.value);
   if (setting === "boardReorder") state.boardReorderEnabled = !state.boardReorderEnabled;
+  if (setting === "compactLinkCards") state.compactLinkCards = !state.compactLinkCards;
   if (setting === "panelVisibility") state.panelVisibility = target.dataset.value;
   if (setting === "wallpaperVisibility") state.wallpaperVisibility = target.dataset.value;
   if (setting === "activePageColor") state.activePageColor = target.value;
@@ -652,6 +713,29 @@ function handleSetting(event) {
   saveState();
   closeModal();
   render();
+}
+
+function handleWallpaperUpload(event) {
+  const file = event.currentTarget.files[0];
+  if (!file) return;
+  if (!["image/jpeg", "image/png"].includes(file.type)) {
+    alert("Choose a JPG or PNG image.");
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    alert("Choose an image smaller than 5 MB.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    state.wallpaperUrl = String(reader.result || "");
+    saveState();
+    closeModal();
+    render();
+  });
+  reader.addEventListener("error", () => alert("Could not read that image file."));
+  reader.readAsDataURL(file);
 }
 
 function openModal(html) {
