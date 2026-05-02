@@ -149,7 +149,7 @@ function render() {
     ? `style="background-image:url('${normalizeUrl(state.wallpaperUrl).replaceAll("'", "%27")}')"`
     : "";
   const overlayWallpaper = state.wallpaperUrl ? `wallpaper-${state.wallpaperVisibility}` : "";
-  const panelClass = state.panelVisibility === "visible" ? "visible" : "";
+  const panelClass = ["visible", "pure"].includes(state.panelVisibility) ? state.panelVisibility : "";
 
   document.querySelector("#app").innerHTML = `
     <div class="shell">
@@ -592,6 +592,7 @@ function openSettings() {
           <div class="button-row">
             <button class="toggle-button ${state.panelVisibility === "visible" ? "active" : ""}" data-setting="panelVisibility" data-value="visible">Visible</button>
             <button class="toggle-button ${state.panelVisibility === "semi" ? "active" : ""}" data-setting="panelVisibility" data-value="semi">Semi visible</button>
+            <button class="toggle-button ${state.panelVisibility === "pure" ? "active" : ""}" data-setting="panelVisibility" data-value="pure">Pure transparent</button>
           </div>
         </section>
         <section class="settings-section">

@@ -82,8 +82,9 @@ The old Vite/React files are still in the repository for reference, but they are
 2. Choose a theme.
 3. Toggle board movement.
 4. Set panel visibility.
-5. Pick active page and link button colors.
-6. Choose a wallpaper preset or paste an image URL.
+5. Set panels to visible, semi visible, or pure transparent.
+6. Pick active page and link button colors.
+7. Choose a wallpaper preset or paste an image URL.
 
 ## Project Structure
 

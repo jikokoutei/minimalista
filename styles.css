@@ -107,6 +107,12 @@ button:disabled {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.panel.pure {
+  border-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+}
+
 .sidebar {
   width: 255px;
   flex: 0 0 255px;
