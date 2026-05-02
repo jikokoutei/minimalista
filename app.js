@@ -60,7 +60,6 @@ let state = initialState();
 state.activePageId = state.pages[0].id;
 
 let loaded = false;
-let query = "";
 let draggedLink = null;
 let draggedBoardId = null;
 
@@ -105,6 +104,22 @@ function normalizeUrl(url) {
   return /^https?:\/\//i.test(value) ? value : `https://${value}`;
 }
 
+function searchTarget(value) {
+  const term = value.trim();
+  if (!term) return "";
+
+  const hasProtocol = /^[a-z][a-z0-9+.-]*:\/\//i.test(term);
+  const isLocalhost = /^localhost(:\d+)?(\/.*)?$/i.test(term);
+  const looksLikeDomain = /^[^\s]+\.[^\s]{2,}(\/.*)?$/i.test(term);
+  const looksLikeIp = /^\d{1,3}(\.\d{1,3}){3}(:\d+)?(\/.*)?$/.test(term);
+
+  if (hasProtocol || isLocalhost || looksLikeDomain || looksLikeIp) {
+    return normalizeUrl(term);
+  }
+
+  return `https://www.google.com/search?q=${encodeURIComponent(term)}`;
+}
+
 function activePage() {
   return state.pages.find((page) => page.id === state.activePageId) || state.pages[0];
 }
@@ -135,15 +150,6 @@ function render() {
     : "";
   const overlayWallpaper = state.wallpaperUrl ? `wallpaper-${state.wallpaperVisibility}` : "";
   const panelClass = state.panelVisibility === "visible" ? "visible" : "";
-  const term = query.trim().toLowerCase();
-  const boards = term
-    ? page.boards.map((board) => ({
-        ...board,
-        links: board.links.filter(
-          (link) => link.title.toLowerCase().includes(term) || link.url.toLowerCase().includes(term)
-        ),
-      }))
-    : page.boards;
 
   document.querySelector("#app").innerHTML = `
     <div class="shell">
@@ -194,13 +200,14 @@ function render() {
           </div>
         </aside>
         <main class="main panel ${panelClass}">
-          <div class="toolbar">
-            <input id="search" value="${escapeAttribute(query)}" placeholder="Search bookmarks" />
-            <button class="secondary-button" data-action="add-board">+ Board</button>
-            <button class="primary-button" data-action="open-add-link" ${page.boards.length ? "" : "disabled"}>+ Link</button>
-          </div>
+          <form class="toolbar" data-form="web-search">
+            <input id="search" name="search" autocomplete="off" placeholder="Search Google or type a URL" />
+            <button class="secondary-button" type="submit">Search</button>
+            <button class="secondary-button" type="button" data-action="add-board">+ Board</button>
+            <button class="primary-button" type="button" data-action="open-add-link" ${page.boards.length ? "" : "disabled"}>+ Link</button>
+          </form>
           <section class="boards">
-            ${boards.map((board) => renderBoard(page, board)).join("")}
+            ${page.boards.map((board) => renderBoard(page, board)).join("")}
           </section>
         </main>
       </div>
@@ -219,6 +226,7 @@ function renderBoard(page, board) {
         <div class="board-actions">
           <button class="icon-button" title="Rename board" data-action="rename-board" data-board-id="${board.id}">${icon("edit")}</button>
           <button class="icon-button" title="Add link" data-action="open-add-link" data-board-id="${board.id}">${icon("plus")}</button>
+          <button class="icon-button danger" title="Delete board" data-action="delete-board" data-board-id="${board.id}">${icon("trash")}</button>
         </div>
       </div>
       <div class="link-list">
@@ -230,7 +238,7 @@ function renderBoard(page, board) {
                     <div class="link-card" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
                       <a href="${escapeAttribute(normalizeUrl(link.url))}" target="_blank" rel="noreferrer">${escapeHtml(link.title)}</a>
                       <p class="link-url">${escapeHtml(link.url)}</p>
-                      <button class="remove-link" data-action="remove-link" data-page-id="${page.id}" data-board-id="${board.id}" data-link-id="${link.id}">Remove</button>
+                      <button class="remove-link" data-action="remove-link" data-page-id="${page.id}" data-board-id="${board.id}" data-link-id="${link.id}">Delete bookmark</button>
                     </div>`
                 )
                 .join("")
@@ -242,16 +250,12 @@ function renderBoard(page, board) {
 }
 
 function bindEvents() {
-  document.querySelector("#search").addEventListener("input", (event) => {
-    query = event.target.value;
-    render();
-  });
-
   document.querySelectorAll("[data-action]").forEach((element) => {
     element.addEventListener("click", handleAction);
   });
 
   document.querySelector('[data-form="todo"]').addEventListener("submit", addTodo);
+  document.querySelector('[data-form="web-search"]').addEventListener("submit", submitWebSearch);
 
   document.querySelectorAll(".link-card").forEach((card) => {
     card.addEventListener("dragstart", () => {
@@ -298,11 +302,19 @@ function handleAction(event) {
   if (action === "restore-link") restoreLink();
   if (action === "add-board") addBoard();
   if (action === "rename-board") renameBoard(target.dataset.boardId);
+  if (action === "delete-board") deleteBoard(target.dataset.boardId);
   if (action === "open-add-link") openAddLink(target.dataset.boardId || "");
   if (action === "remove-link") removeLink(target.dataset.pageId, target.dataset.boardId, target.dataset.linkId);
   if (action === "toggle-todo") toggleTodo(target.dataset.todoId);
   if (action === "delete-todo") deleteTodo(target.dataset.todoId);
   if (action === "open-settings") openSettings();
+}
+
+function submitWebSearch(event) {
+  event.preventDefault();
+  const form = new FormData(event.target);
+  const target = searchTarget(String(form.get("search") || ""));
+  if (target) window.location.href = target;
 }
 
 function selectPage(pageId) {
@@ -356,6 +368,26 @@ function renameBoard(boardId) {
       item.id === page.id
         ? { ...item, boards: item.boards.map((candidate) => (candidate.id === boardId ? { ...candidate, name: name.trim() } : candidate)) }
         : item
+    ),
+  }));
+}
+
+function deleteBoard(boardId) {
+  const page = activePage();
+  const board = page.boards.find((item) => item.id === boardId);
+  if (!board) return;
+
+  if (page.boards.length <= 1) {
+    alert("At least one board is required.");
+    return;
+  }
+
+  if (!confirm(`Delete "${board.name}" and all bookmarks inside it?`)) return;
+
+  setState((prev) => ({
+    ...prev,
+    pages: prev.pages.map((item) =>
+      item.id === page.id ? { ...item, boards: item.boards.filter((candidate) => candidate.id !== boardId) } : item
     ),
   }));
 }
@@ -423,6 +455,7 @@ function removeLink(pageId, boardId, linkId) {
   const board = page && page.boards.find((item) => item.id === boardId);
   const link = board && board.links.find((item) => item.id === linkId);
   if (!link) return;
+  if (!confirm(`Delete bookmark "${link.title}"?`)) return;
 
   setState((prev) => ({
     ...prev,
@@ -480,6 +513,9 @@ function toggleTodo(todoId) {
 }
 
 function deleteTodo(todoId) {
+  const todo = state.todos.find((item) => item.id === todoId);
+  if (todo && !confirm(`Delete task "${todo.text}"?`)) return;
+
   setState((prev) => ({ ...prev, todos: prev.todos.filter((todo) => todo.id !== todoId) }));
 }
 

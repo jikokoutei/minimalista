@@ -170,6 +170,12 @@ h1 {
   border-radius: 8px;
 }
 
+.icon-button.danger:hover {
+  border-color: rgba(254, 202, 202, 0.6);
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.28);
+}
+
 .secondary-button,
 .primary-button,
 .toggle-button {
