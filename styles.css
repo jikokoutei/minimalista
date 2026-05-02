@@ -140,7 +140,9 @@ h1 {
   display: grid;
   gap: 8px;
 }
-
+.todo-list{
+  margin-top: 10px;
+}
 .page-row {
   display: flex;
   min-width: 0;
