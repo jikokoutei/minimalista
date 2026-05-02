@@ -1,6 +1,6 @@
 # Minimalista
 
-Minimalista is a clean browser-extension workspace for saving useful links, arranging them into boards, tracking a short to-do list, and personalizing the popup with themes, wallpaper, and accent colors.
+Minimalista is a clean browser-extension workspace for saving useful links, arranging them into boards, tracking a short to-do list, and personalizing the popup with themes, wallpaper, and accent colors. The extension now runs as a plain HTML/CSS/JS app, so npm is not required to load it in the browser.
 
 ![Minimalista extension UI](assets/minimalista-ui.png)
 
@@ -12,44 +12,32 @@ Minimalista is a clean browser-extension workspace for saving useful links, arra
 - Restore recently removed links from trash.
 - Keep a compact to-do list beside your bookmarks.
 - Customize theme, wallpaper, panel visibility, active page color, and link button color.
-- Persist user changes with `chrome.storage.local` in the extension and `localStorage` during local development.
+- Persist user changes with `chrome.storage.local` in the extension and `localStorage` during local HTML preview.
 
 ## Install As A Browser Extension
 
-1. Install dependencies:
-
-   ```powershell
-   npm install
-   ```
-
-2. Build the extension:
-
-   ```powershell
-   npm run build
-   ```
-
-3. Open Chrome or another Chromium-based browser.
-4. Go to `chrome://extensions`.
-5. Turn on **Developer mode**.
-6. Click **Load unpacked**.
-7. Select the `dist` folder from this project.
-8. Pin **Minimalista** from the extensions menu and open it from the toolbar.
+1. Download or clone this project.
+2. Open Chrome or another Chromium-based browser.
+3. Go to `chrome://extensions`.
+4. Turn on **Developer mode**.
+5. Click **Load unpacked**.
+6. Select this project folder, not `dist`.
+7. Pin **Minimalista** from the extensions menu.
+8. Open a new browser tab to see Minimalista as your new tab page.
+9. You can also click the Minimalista icon to open the workspace in a tab.
 
 ## Development
 
-Run the local app:
+Open `index.html` directly in a browser to preview the static version. The extension files are:
 
-```powershell
-npm run dev
+```text
+manifest.json
+index.html
+styles.css
+app.js
 ```
 
-Build production files:
-
-```powershell
-npm run build
-```
-
-The production extension files are generated in `dist/`.
+The old Vite/React files are still in the repository for reference, but they are no longer required to run the extension.
 
 ## How To Use
 
@@ -92,12 +80,11 @@ The production extension files are generated in `dist/`.
 
 ```text
 src/
-  App.tsx       Main extension UI and persistence logic
-  main.tsx      React entry point
-  index.css     Tailwind and global styles
-public/
-  manifest.json Extension manifest copied into dist
-manifest.json   Root manifest reference
+  App.tsx       Previous React version kept for reference
+app.js          Plain JavaScript extension logic
+styles.css      Plain CSS extension styling
+index.html      Extension popup page
+manifest.json   Extension manifest
 ```
 
 ## Notes
@@ -105,3 +92,6 @@ manifest.json   Root manifest reference
 - The extension uses Manifest V3.
 - `storage` permission is required so user changes survive popup reloads.
 - Remote wallpaper URLs are stored as user settings; custom images must be reachable by the browser.
+- No npm install or build step is required for the plain HTML extension.
+- The toolbar icon opens Minimalista as a full tab instead of a small popup.
+- Minimalista replaces the browser new tab page while the extension is enabled.

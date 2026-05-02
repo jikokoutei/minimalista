@@ -3,7 +3,13 @@
   "name": "Minimalista",
   "version": "1.0",
   "permissions": ["tabs", "windows", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
   "action": {
-    "default_popup": "index.html"
+    "default_title": "Open Minimalista"
   }
 }
