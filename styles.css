@@ -1,6 +1,14 @@
+@font-face {
+  font-family: "josefin-slab-400";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/josefin-slab-400.ttf") format("truetype");
+}
+
 :root {
   color-scheme: dark;
-  font-family: "Josefin Slab", Georgia, "Times New Roman", serif;
+  font-family: "josefin-slab-400", Georgia, "Times New Roman", serif;
   --active-color: #7c3aed;
   --link-color: #8b5cf6;
 }
@@ -168,6 +176,12 @@ h1 {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+}
+
+.icon-button.danger:hover {
+  border-color: rgba(254, 202, 202, 0.6);
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.28);
 }
 
 .secondary-button,

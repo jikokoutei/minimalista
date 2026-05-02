@@ -7,8 +7,10 @@ Minimalista is a clean browser-extension workspace for saving useful links, arra
 ## Features
 
 - Save bookmarks with a title, URL, and target board.
+- Search Google or open a typed URL from the new tab search box.
 - Organize links across pages and draggable boards.
 - Move links between boards with drag and drop.
+- Delete bookmarks or whole boards when you no longer need them.
 - Restore recently removed links from trash.
 - Keep a compact to-do list beside your bookmarks.
 - Customize theme, wallpaper, panel visibility, active page color, and link button color.
@@ -41,6 +43,12 @@ The old Vite/React files are still in the repository for reference, but they are
 
 ## How To Use
 
+### Search The Web Or Open A URL
+
+1. Type a search phrase or URL in the top search box.
+2. Press **Enter** or click **Search**.
+3. URLs like `example.com` open directly, while normal text opens Google search results.
+
 ### Add A Link
 
 1. Click **+ Link**.
@@ -53,12 +61,13 @@ The old Vite/React files are still in the repository for reference, but they are
 
 - Click **+ Board** to create a new board.
 - Click the pencil button on a board to rename it.
+- Click the trash button on a board to delete the board and its bookmarks.
 - Drag one board over another to reorder boards when board movement is enabled.
 
 ### Move Or Remove Links
 
 - Drag a link onto another board to move it.
-- Use **Remove** on a link to send it to trash.
+- Use **Delete bookmark** on a link to send it to trash.
 - Click **Restore from trash** to bring back the most recently removed link.
 
 ### Manage Pages
