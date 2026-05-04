@@ -1,153 +1,186 @@
+<div align="center">
+
+<br/>
+
+<img src="https://github.com/user-attachments/assets/5a355dbf-a0b4-481c-baed-d60221403fe0" width="80px" style="border-radius: 16px;" />
+
+<br/>
+
 # Minimalista
 
-Minimalista is a clean browser-extension workspace for saving useful links, arranging them into boards, tracking a short to-do list, and personalizing the popup with themes, wallpaper, and accent colors. The extension now runs as a plain HTML/CSS/JS app, so npm is not required to load it in the browser.
+**A clean, distraction-free browser workspace — right in your new tab.**
+
+Save links. Build boards. Check off tasks. Make it yours.
+
+[![Live Preview](https://img.shields.io/badge/Live%20Preview-minimalista.pages.dev-black?style=for-the-badge&logo=googlechrome&logoColor=white)](https://minimalista.pages.dev/)
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-informational?style=for-the-badge&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
+[![No Build Required](https://img.shields.io/badge/No%20Build-Required-success?style=for-the-badge)](https://minimalista.pages.dev/)
+[![License](https://img.shields.io/badge/License-MIT-blueviolet?style=for-the-badge)](LICENSE)
+
+<br/>
+
+<img src="https://github.com/user-attachments/assets/5a355dbf-a0b4-481c-baed-d60221403fe0" width="48%" />
+<img src="https://github.com/user-attachments/assets/3399b36a-d687-4905-ad95-bb8974f07220" width="48%" />
+
+<br/><br/>
+
+</div>
 
 ---
 
-## 🔗 Live Preview
+## ✦ What is Minimalista?
 
-👉 https://minimalista.pages.dev/
-
----
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/5a355dbf-a0b4-481c-baed-d60221403fe0" width="48%" />
-  <img src="https://github.com/user-attachments/assets/3399b36a-d687-4905-ad95-bb8974f07220" width="48%" />
-</p>
-
+Minimalista is a **browser extension** that replaces your new tab with a sleek personal workspace. It lets you organize bookmarks into boards, manage a to-do list, and personalize every visual detail — all without a build tool or npm. Just open and go.
 
 ---
 
 ## ✨ Features
 
-* Save bookmarks with a title, URL, and target board
-* Search Google or open a typed URL from the new tab search box
-* Organize links across pages and draggable boards
-* Move links between boards with drag and drop
-* Delete bookmarks or whole boards when no longer needed
-* Restore recently removed links from trash
-* Keep a compact to-do list beside bookmarks
-* Customize theme, wallpaper presets, uploaded wallpapers, panel visibility, active page color, and link button color
-* Persist user changes with `chrome.storage.local` (extension) and `localStorage` (HTML preview)
+| Category | Details |
+|---|---|
+| 🔗 **Bookmarks** | Save links with a title, URL, and target board |
+| 🔍 **Smart Search** | Google search or direct URL from the search bar |
+| 📋 **Boards** | Create, rename, reorder, and drag-drop boards |
+| ♻️ **Trash & Restore** | Recover recently deleted links with one click |
+| ✅ **To-Do List** | Keep a compact task list alongside your links |
+| 🎨 **Themes** | Choose themes, wallpapers, accent colors, panel styles |
+| 💾 **Persistence** | `chrome.storage.local` (extension) · `localStorage` (preview) |
+| ⚡ **Zero Setup** | No npm, no build step — plain HTML/CSS/JS |
 
 ---
 
-## 🚀 Install From Release (Recommended)
+## 🚀 Install From Release
 
-1. Download the latest release (`minimalista.zip`)
+> **Recommended** — no setup needed.
+
+1. **[⬇ Download the latest release `minimalista.zip`](https://github.com/jikokoutei/minimalista/releases/latest)**
 2. Extract the ZIP file
-3. Open your browser and go to `chrome://extensions`
-4. Enable **Developer mode**
-5. Click **Load unpacked**
+3. Navigate to `chrome://extensions` in your browser
+4. Enable **Developer Mode** (toggle, top-right)
+5. Click **Load Unpacked**
 6. Select the extracted **Minimalista** folder
-7. Done — Minimalista is ready to use 🎉
-
-Open a new tab to start exploring your workspace.
+7. Open a new tab — you're all set 🎉
 
 ---
 
 ## 🛠️ Development
 
-Open `index.html` directly in a browser to preview the static version.
+No build tools required. Just open `index.html` in a browser for a live static preview.
 
-### Core Files
-
-```text
-manifest.json
-index.html
-styles.css
-app.js
+```
+minimalista/
+├── manifest.json       Extension config (Manifest V3)
+├── index.html          Main UI entry point
+├── styles.css          All styling
+├── app.js              Core JavaScript logic
+└── assets/
+    └── fonts/        
 ```
 
-The previous Vite/React setup is still included for reference but is no longer required.
+> The Vite/React setup is preserved for reference but is **not required**.
 
 ---
 
-## 🚀 How To Use
+## 📖 Usage Guide
 
-### 🔎 Search The Web Or Open A URL
+<details>
+<summary><strong>🔎 Search the Web or Open a URL</strong></summary>
 
-1. Enter a search query or URL in the top search bar
+<br/>
+
+1. Type a query or URL in the top search bar
 2. Press **Enter** or click **Search**
-3. Direct URLs open instantly, while text triggers Google search
+3. URLs open instantly — text triggers a Google search
 
----
+</details>
 
-### ➕ Add A Link
+<details>
+<summary><strong>➕ Add a Link</strong></summary>
+
+<br/>
 
 1. Click **+ Link**
-2. Enter title and URL
-3. Select a board
+2. Enter a title and URL
+3. Select a target board
 4. Click **Save**
 
----
+</details>
 
-### 📁 Manage Boards
+<details>
+<summary><strong>📁 Manage Boards</strong></summary>
 
-* Click **+ Board** to create a new board
-* Use ✏️ to rename boards
-* Use 🗑️ to delete boards (and their links)
-* Drag boards to reorder (if enabled)
+<br/>
 
----
+- Click **+ Board** to create a new board
+- Use ✏️ to rename · 🗑️ to delete
+- Drag boards to reorder (when enabled in settings)
 
-### 🔄 Move Or Remove Links
+</details>
 
-* Drag links between boards
-* Delete links → moved to trash
-* Restore using **Restore from trash**
+<details>
+<summary><strong>🔄 Move or Remove Links</strong></summary>
 
----
+<br/>
 
-### 📄 Manage Pages
+- Drag links between boards freely
+- Deleted links go to **Trash**
+- Recover them anytime via **Restore from Trash**
 
-* Click **+ New page** to create a workspace
-* Switch pages via sidebar
-* Delete pages using 🗑️ icon
+</details>
 
----
+<details>
+<summary><strong>📄 Manage Pages</strong></summary>
 
-### 🎨 Customize The UI
+<br/>
+
+- Click **+ New Page** to create a fresh workspace
+- Switch between pages via the sidebar
+- Delete pages using the 🗑️ icon
+
+</details>
+
+<details>
+<summary><strong>🎨 Customize the UI</strong></summary>
+
+<br/>
 
 1. Open **Settings**
-2. Choose theme
-3. Toggle board movement
-4. Adjust panel visibility (visible / semi / transparent)
-5. Pick accent colors
-6. Set wallpaper (preset, URL, or upload JPG/PNG)
+2. Choose a theme (light, dark, or custom)
+3. Toggle board drag-and-drop
+4. Adjust panel visibility — visible / semi / transparent
+5. Pick accent colors for the active page and link buttons
+6. Set a wallpaper via preset, URL, or upload (JPG / PNG)
 
----
-
-## 📂 Project Structure
-
-```text
-src/
-  App.tsx       Previous React version (reference only)
-app.js          Core JavaScript logic
-styles.css      Styling
-index.html      Main UI
-manifest.json   Extension config
-```
+</details>
 
 ---
 
 ## 📝 Notes
 
-* Uses **Manifest V3**
-* Requires `storage` permission for persistence
-* Supports remote + uploaded wallpapers
-* No npm / build step required
-* Toolbar icon opens full tab view
-* Replaces the browser new tab page while enabled
+- Built on **Manifest V3**
+- Requires the `storage` permission for data persistence
+- Supports remote wallpaper URLs and local image uploads
+- Toolbar icon opens the full workspace in a new tab
+- Replaces the browser's default new tab page while enabled
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
-Feel free to fork the repo and submit pull requests.
+Contributions are welcome and appreciated!
+
+Fork the repository, make your changes, and open a pull request. For significant changes, opening an issue first to discuss is encouraged.
 
 ---
 
 ## ⭐ Support
 
-If you find this project useful, consider giving it a ⭐ on GitHub!
+If Minimalista makes your browser feel a little more like home, consider leaving a **star on GitHub** — it helps more than you'd think.
+
+---
+
+<div align="center">
+
+Made with care · MIT License
+
+</div>
