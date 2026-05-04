@@ -2,42 +2,54 @@
 
 Minimalista is a clean browser-extension workspace for saving useful links, arranging them into boards, tracking a short to-do list, and personalizing the popup with themes, wallpaper, and accent colors. The extension now runs as a plain HTML/CSS/JS app, so npm is not required to load it in the browser.
 
-## Preview
-[Live Preview](https://minimalista.pages.dev/)
+---
+
+## 🔗 Live Preview
+
+👉 https://minimalista.pages.dev/
+
+---
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5a355dbf-a0b4-481c-baed-d60221403fe0" width="48%" />
+  <img src="https://github.com/user-attachments/assets/3399b36a-d687-4905-ad95-bb8974f07220" width="48%" />
+</p>
 
 
-<img  width="500" alt="image" src="https://github.com/user-attachments/assets/5a355dbf-a0b4-481c-baed-d60221403fe0" />
-<img width="500" alt="image" src="https://github.com/user-attachments/assets/3399b36a-d687-4905-ad95-bb8974f07220" />
+---
 
+## ✨ Features
 
+* Save bookmarks with a title, URL, and target board
+* Search Google or open a typed URL from the new tab search box
+* Organize links across pages and draggable boards
+* Move links between boards with drag and drop
+* Delete bookmarks or whole boards when no longer needed
+* Restore recently removed links from trash
+* Keep a compact to-do list beside bookmarks
+* Customize theme, wallpaper presets, uploaded wallpapers, panel visibility, active page color, and link button color
+* Persist user changes with `chrome.storage.local` (extension) and `localStorage` (HTML preview)
 
-## Features
+---
 
-- Save bookmarks with a title, URL, and target board.
-- Search Google or open a typed URL from the new tab search box.
-- Organize links across pages and draggable boards.
-- Move links between boards with drag and drop.
-- Delete bookmarks or whole boards when you no longer need them.
-- Restore recently removed links from trash.
-- Keep a compact to-do list beside your bookmarks.
-- Customize theme, wallpaper presets, uploaded wallpaper images, panel visibility, active page color, and link button color.
-- Persist user changes with `chrome.storage.local` in the extension and `localStorage` during local HTML preview.
+## 🚀 Install From Release (Recommended)
 
-## Install As A Browser Extension
+1. Download the latest release (`minimalista.zip`)
+2. Extract the ZIP file
+3. Open your browser and go to `chrome://extensions`
+4. Enable **Developer mode**
+5. Click **Load unpacked**
+6. Select the extracted **Minimalista** folder
+7. Done — Minimalista is ready to use 🎉
 
-1. Download or clone this project.
-2. Open Chrome or another Chromium-based browser.
-3. Go to `chrome://extensions`.
-4. Turn on **Developer mode**.
-5. Click **Load unpacked**.
-6. Select this project folder, not `dist`.
-7. Pin **Minimalista** from the extensions menu.
-8. Open a new browser tab to see Minimalista as your new tab page.
-9. You can also click the Minimalista icon to open the workspace in a tab.
+Open a new tab to start exploring your workspace.
 
-## Development
+---
 
-Open `index.html` directly in a browser to preview the static version. The extension files are:
+## 🛠️ Development
+
+Open `index.html` directly in a browser to preview the static version.
+
+### Core Files
 
 ```text
 manifest.json
@@ -46,69 +58,96 @@ styles.css
 app.js
 ```
 
-The old Vite/React files are still in the repository for reference, but they are no longer required to run the extension.
+The previous Vite/React setup is still included for reference but is no longer required.
 
-## How To Use
+---
 
-### Search The Web Or Open A URL
+## 🚀 How To Use
 
-1. Type a search phrase or URL in the top search box.
-2. Press **Enter** or click **Search**.
-3. URLs like `example.com` open directly, while normal text opens Google search results.
+### 🔎 Search The Web Or Open A URL
 
-### Add A Link
+1. Enter a search query or URL in the top search bar
+2. Press **Enter** or click **Search**
+3. Direct URLs open instantly, while text triggers Google search
 
-1. Click **+ Link**.
-2. Enter the bookmark title.
-3. Enter the URL.
-4. Choose the board.
-5. Click **Save**.
+---
 
-### Add Or Rename Boards
+### ➕ Add A Link
 
-- Click **+ Board** to create a new board.
-- Click the pencil button on a board to rename it.
-- Click the trash button on a board to delete the board and its bookmarks.
-- Drag one board over another to reorder boards when board movement is enabled.
+1. Click **+ Link**
+2. Enter title and URL
+3. Select a board
+4. Click **Save**
 
-### Move Or Remove Links
+---
 
-- Drag a link onto another board to move it.
-- Use **Delete bookmark** on a link to send it to trash.
-- Click **Restore from trash** to bring back the most recently removed link.
+### 📁 Manage Boards
 
-### Manage Pages
+* Click **+ Board** to create a new board
+* Use ✏️ to rename boards
+* Use 🗑️ to delete boards (and their links)
+* Drag boards to reorder (if enabled)
 
-- Click **+ New page** to create another workspace page.
-- Use the page buttons in the sidebar to switch pages.
-- Use the trash button beside a page to delete it.
+---
 
-### Customize The UI
+### 🔄 Move Or Remove Links
 
-1. Click **Settings**.
-2. Choose a theme.
-3. Toggle board movement.
-4. Set panel visibility.
-5. Set panels to visible, semi visible, or pure transparent.
-6. Pick active page and link button colors.
-7. Choose a wallpaper preset, paste an image URL, or upload a JPG/PNG wallpaper.
+* Drag links between boards
+* Delete links → moved to trash
+* Restore using **Restore from trash**
 
-## Project Structure
+---
+
+### 📄 Manage Pages
+
+* Click **+ New page** to create a workspace
+* Switch pages via sidebar
+* Delete pages using 🗑️ icon
+
+---
+
+### 🎨 Customize The UI
+
+1. Open **Settings**
+2. Choose theme
+3. Toggle board movement
+4. Adjust panel visibility (visible / semi / transparent)
+5. Pick accent colors
+6. Set wallpaper (preset, URL, or upload JPG/PNG)
+
+---
+
+## 📂 Project Structure
 
 ```text
 src/
-  App.tsx       Previous React version kept for reference
-app.js          Plain JavaScript extension logic
-styles.css      Plain CSS extension styling
-index.html      Extension popup page
-manifest.json   Extension manifest
+  App.tsx       Previous React version (reference only)
+app.js          Core JavaScript logic
+styles.css      Styling
+index.html      Main UI
+manifest.json   Extension config
 ```
 
-## Notes
+---
 
-- The extension uses Manifest V3.
-- `storage` permission is required so user changes survive popup reloads.
-- Remote wallpaper URLs and uploaded JPG/PNG wallpaper images are stored as user settings.
-- No npm install or build step is required for the plain HTML extension.
-- The toolbar icon opens Minimalista as a full tab instead of a small popup.
-- Minimalista replaces the browser new tab page while the extension is enabled.
+## 📝 Notes
+
+* Uses **Manifest V3**
+* Requires `storage` permission for persistence
+* Supports remote + uploaded wallpapers
+* No npm / build step required
+* Toolbar icon opens full tab view
+* Replaces the browser new tab page while enabled
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+Feel free to fork the repo and submit pull requests.
+
+---
+
+## ⭐ Support
+
+If you find this project useful, consider giving it a ⭐ on GitHub!
