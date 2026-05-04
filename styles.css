@@ -35,11 +35,43 @@ button:disabled {
   cursor: not-allowed;
 }
 
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sheen {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
 .shell {
   position: relative;
   min-height: 100vh;
   padding: 20px 20px 84px;
   overflow: hidden;
+  animation: fade-slide-up 420ms ease both;
 }
 
 .wallpaper,
@@ -53,6 +85,26 @@ button:disabled {
   z-index: -2;
   background-position: center;
   background-size: cover;
+  background-color: #020617;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.wallpaper.loaded {
+  opacity: 1;
+}
+
+.wallpaper.failed::after {
+  position: fixed;
+  right: 22px;
+  bottom: 84px;
+  border: 1px solid rgba(254, 202, 202, 0.32);
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: #fecaca;
+  background: rgba(69, 10, 10, 0.78);
+  content: "Wallpaper image could not load";
+  font-size: 12px;
 }
 
 .overlay {
@@ -75,6 +127,26 @@ button:disabled {
 
 .overlay.theme-4 {
   background: linear-gradient(135deg, #020617, #27272a, #0a0a0a);
+}
+
+.overlay.theme-5 {
+  background: linear-gradient(135deg, #4a044e, #be123c, #111827);
+}
+
+.overlay.theme-6 {
+  background: linear-gradient(135deg, #082f49, #0e7490, #312e81);
+}
+
+.overlay.theme-7 {
+  background: linear-gradient(135deg, #451a03, #b45309, #7f1d1d);
+}
+
+.overlay.theme-8 {
+  background: linear-gradient(135deg, #052e16, #365314, #0f172a);
+}
+
+.overlay.theme-custom {
+  background: linear-gradient(135deg, var(--custom-theme-start), var(--custom-theme-middle), var(--custom-theme-end));
 }
 
 .overlay.wallpaper-semi {
@@ -100,6 +172,13 @@ button:disabled {
   border-radius: 18px;
   background: rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(18px);
+  box-shadow: 0 18px 70px rgba(2, 6, 23, 0.18);
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.panel:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 22px 78px rgba(2, 6, 23, 0.28);
 }
 
 .panel.visible {
@@ -147,6 +226,7 @@ h1 {
   display: flex;
   min-width: 0;
   gap: 7px;
+  animation: fade-slide-up 260ms ease both;
 }
 
 .page-button,
@@ -154,10 +234,12 @@ h1 {
 .icon-button,
 .primary-button,
 .toggle-button {
+  position: relative;
   border: 1px solid rgba(255, 255, 255, 0.22);
   color: #f8fafc;
   background: rgba(255, 255, 255, 0.05);
-  transition: background 160ms ease, filter 160ms ease, transform 160ms ease;
+  overflow: hidden;
+  transition: border-color 170ms ease, background 170ms ease, box-shadow 190ms ease, filter 160ms ease, transform 190ms ease;
 }
 
 .page-button:hover,
@@ -165,6 +247,33 @@ h1 {
 .icon-button:hover,
 .toggle-button:hover {
   background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.primary-button:hover,
+.settings-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button::after,
+.secondary-button::after,
+.settings-button::after {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 34px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+}
+
+.primary-button:hover::after,
+.secondary-button:hover::after,
+.settings-button:hover::after {
+  animation: sheen 650ms ease;
+  opacity: 1;
 }
 
 .page-button {
@@ -215,6 +324,7 @@ h1 {
   border-color: transparent;
   background: var(--link-color);
   font-weight: 700;
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.18);
 }
 
 .primary-button:hover {
@@ -253,7 +363,8 @@ h1 {
 .todo-form input,
 .toolbar input,
 .modal input,
-.modal select {
+.modal select,
+.settings-select {
   min-width: 0;
   height: 40px;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -262,14 +373,20 @@ h1 {
   color: #f8fafc;
   background: rgba(255, 255, 255, 0.08);
   outline: none;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 180ms ease;
 }
 
 .todo-form input:focus,
 .toolbar input:focus,
 .modal input:focus,
-.modal select:focus {
+.modal select:focus,
+.settings-select:focus {
   border-color: #a78bfa;
   box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.28);
+}
+
+.settings-select {
+  width: 100%;
 }
 
 .todo-form input,
@@ -306,12 +423,14 @@ h1 {
   overflow: hidden;
   background: rgba(255, 255, 255, 0.05);
   font-size: 13px;
+  animation: fade-slide-up 260ms ease both;
   transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
 }
 
 .todo-item:hover {
   border-color: rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 .todo-toggle {
@@ -426,6 +545,16 @@ h1 {
   border-radius: 14px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.06);
+  animation: fade-slide-up 320ms ease both;
+  box-shadow: 0 12px 36px rgba(2, 6, 23, 0.12);
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.board:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 46px rgba(2, 6, 23, 0.22);
+  transform: translateY(-2px);
 }
 
 .board.dragging {
@@ -467,10 +596,14 @@ h1 {
   padding: 10px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.22);
+  animation: fade-slide-up 240ms ease both;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 190ms ease, transform 190ms ease;
 }
 
 .link-card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
   background: rgba(0, 0, 0, 0.36);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.22);
   transform: translateY(-1px);
 }
 
@@ -494,11 +627,24 @@ h1 {
 }
 
 .link-favicon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.12);
+  object-fit: contain;
+  padding: 1px;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.link-favicon:not(.loaded) {
+  opacity: 0.72;
+}
+
+.link-favicon.loaded {
+  opacity: 1;
+  transform: scale(1.02);
 }
 
 .link-card.compact {
@@ -528,7 +674,7 @@ h1 {
 }
 
 .link-card:not(.compact) .link-url {
-  margin-left: 26px;
+  margin-left: 28px;
 }
 
 .remove-link {
@@ -559,8 +705,17 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 999px;
   padding: 0 18px;
+  overflow: hidden;
   color: #f8fafc;
   background: rgba(2, 6, 23, 0.8);
+  box-shadow: 0 16px 42px rgba(2, 6, 23, 0.3);
+  transition: border-color 170ms ease, background 170ms ease, box-shadow 200ms ease, transform 190ms ease;
+}
+
+.settings-button:hover {
+  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 18px 52px rgba(2, 6, 23, 0.42);
 }
 
 .modal-backdrop {
@@ -571,6 +726,7 @@ h1 {
   place-items: center;
   padding: 20px;
   background: rgba(0, 0, 0, 0.68);
+  animation: fade-slide-up 160ms ease both;
 }
 
 .modal {
@@ -582,6 +738,7 @@ h1 {
   padding: 20px;
   background: #020617;
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42);
+  animation: modal-in 220ms ease both;
 }
 
 .modal h2 {
@@ -627,7 +784,7 @@ h1 {
 }
 
 .theme-grid {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .wallpaper-grid {
@@ -635,13 +792,31 @@ h1 {
 }
 
 .color-grid {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 }
 
 .theme-button {
-  height: 48px;
+  display: flex;
+  min-height: 54px;
+  align-items: flex-end;
+  justify-content: flex-start;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 10px;
+  padding: 8px;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+}
+
+.theme-button span {
+  max-width: 100%;
+  overflow: hidden;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
 }
 
 .theme-button.active,
@@ -650,14 +825,101 @@ h1 {
   background: rgba(255, 255, 255, 0.14);
 }
 
+.theme-button.theme-1 {
+  background: linear-gradient(135deg, #0f172a, #334155, #0f172a);
+}
+
+.theme-button.theme-2 {
+  background: linear-gradient(135deg, #1e1b4b, #581c87, #312e81);
+}
+
+.theme-button.theme-3 {
+  background: linear-gradient(135deg, #064e3b, #0f766e, #0f172a);
+}
+
+.theme-button.theme-4 {
+  background: linear-gradient(135deg, #020617, #27272a, #0a0a0a);
+}
+
+.theme-button.theme-5 {
+  background: linear-gradient(135deg, #4a044e, #be123c, #111827);
+}
+
+.theme-button.theme-6 {
+  background: linear-gradient(135deg, #082f49, #0e7490, #312e81);
+}
+
+.theme-button.theme-7 {
+  background: linear-gradient(135deg, #451a03, #b45309, #7f1d1d);
+}
+
+.theme-button.theme-8 {
+  background: linear-gradient(135deg, #052e16, #365314, #0f172a);
+}
+
+.theme-button.theme-custom {
+  background: linear-gradient(135deg, var(--custom-theme-start), var(--custom-theme-middle), var(--custom-theme-end));
+}
+
 .wallpaper-button {
+  position: relative;
+  display: flex;
   height: 78px;
+  align-items: flex-end;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 10px;
+  padding: 8px;
+  overflow: hidden;
   color: #fff;
-  background-position: center;
-  background-size: cover;
+  background: rgba(15, 23, 42, 0.82);
   text-align: left;
+  transition: border-color 180ms ease, box-shadow 200ms ease, transform 190ms ease;
+}
+
+.wallpaper-button::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.55));
+  content: "";
+}
+
+.wallpaper-button.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.16);
+}
+
+.wallpaper-button:hover {
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.22);
+  transform: translateY(-1px);
+}
+
+.wallpaper-button.failed::before {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  color: #fecaca;
+  content: "Preview unavailable";
+  font-size: 12px;
+  text-align: center;
+}
+
+.wallpaper-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wallpaper-button span {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
 }
 
 .upload-wallpaper {
@@ -720,5 +982,16 @@ select option {
 
   .boards {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }

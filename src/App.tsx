@@ -128,14 +128,14 @@ const initialPages: Page[] = [
         id: crypto.randomUUID(),
         name: "Today",
         links: [
-          { id: crypto.randomUUID(), title: "Vite", url: "https://vite.dev" },
-          { id: crypto.randomUUID(), title: "React", url: "https://react.dev" },
+          { id: crypto.randomUUID(), title: "GITHUB", url: "https://github.com/avinashsinghkashyap3-sys" },
+          { id: crypto.randomUUID(), title: "IG", url: "https://www.instagram.com/_.avinash_singh_01" },
         ],
       },
       {
         id: crypto.randomUUID(),
         name: "Research",
-        links: [{ id: crypto.randomUUID(), title: "MDN", url: "https://developer.mozilla.org" }],
+        links: [{ id: crypto.randomUUID(), title: "GH JIK", url: "https://github.com/jikokoutei" }],
       },
     ],
   },
