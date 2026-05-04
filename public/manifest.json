@@ -3,8 +3,9 @@
   "name": "Minimalista",
   "version": "1.0",
   "permissions": ["tabs", "windows", "storage"],
+  "host_permissions": ["https://raw.githubusercontent.com/*", "https://*.githubusercontent.com/*"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com"
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: http: https:"
   },
   "background": {
     "service_worker": "background.js"

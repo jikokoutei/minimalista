@@ -1,3 +1,4 @@
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,7 +11,17 @@ const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), viteSingleFile()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    viteSingleFile(),
+    {
+      name: "copy-root-extension-script",
+      closeBundle() {
+        fs.copyFileSync(path.resolve(__dirname, "app.js"), path.resolve(__dirname, "dist/app.js"));
+      },
+    },
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

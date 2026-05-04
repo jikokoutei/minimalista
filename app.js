@@ -1,6 +1,44 @@
 const STORAGE_KEY = "lumilist-clone-v1";
 
-const themes = ["theme-1", "theme-2", "theme-3", "theme-4"];
+const themes = [
+  "theme-1",
+  "theme-2",
+  "theme-3",
+  "theme-4",
+  "theme-5",
+  "theme-6",
+  "theme-7",
+  "theme-8",
+  "theme-custom",
+];
+const themeLabels = ["Slate", "Violet", "Emerald", "Graphite", "Rose", "Ocean", "Sunset", "Forest", "Custom"];
+const customThemeIndex = themes.length - 1;
+const defaultCustomTheme = {
+  start: "#141e30",
+  middle: "#243b55",
+  end: "#0b1120",
+};
+const searchEngines = [
+  { id: "google", name: "Google", url: "https://www.google.com/search?q={query}" },
+  { id: "bing", name: "Bing", url: "https://www.bing.com/search?q={query}" },
+  { id: "yahoo", name: "Yahoo", url: "https://search.yahoo.com/search?p={query}" },
+  { id: "brave", name: "Brave", url: "https://search.brave.com/search?q={query}" },
+  { id: "duckduckgo", name: "DuckDuckGo", url: "https://duckduckgo.com/?q={query}" },
+  { id: "startpage", name: "Startpage", url: "https://www.startpage.com/sp/search?query={query}" },
+  { id: "ecosia", name: "Ecosia", url: "https://www.ecosia.org/search?q={query}" },
+  { id: "qwant", name: "Qwant", url: "https://www.qwant.com/?q={query}" },
+  { id: "yandex", name: "Yandex", url: "https://yandex.com/search/?text={query}" },
+  { id: "baidu", name: "Baidu", url: "https://www.baidu.com/s?wd={query}" },
+  { id: "naver", name: "Naver", url: "https://search.naver.com/search.naver?query={query}" },
+  { id: "sogou", name: "Sogou", url: "https://www.sogou.com/web?query={query}" },
+  { id: "seznam", name: "Seznam", url: "https://search.seznam.cz/?q={query}" },
+  { id: "swisscows", name: "Swisscows", url: "https://swisscows.com/en/web?query={query}" },
+  { id: "mojeek", name: "Mojeek", url: "https://www.mojeek.com/search?q={query}" },
+  { id: "yep", name: "Yep", url: "https://yep.com/web?q={query}" },
+  { id: "aol", name: "AOL", url: "https://search.aol.com/aol/search?q={query}" },
+  { id: "ask", name: "Ask", url: "https://www.ask.com/web?q={query}" },
+  { id: "perplexity", name: "Perplexity", url: "https://www.perplexity.ai/search?q={query}" },
+];
 const wallpapers = [
   "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10000.jpg",
   "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10006.jpg",
@@ -8,6 +46,22 @@ const wallpapers = [
   "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10021.jpg",
   "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10038.jpg",
   "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10040.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10050.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10117.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10180.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10217.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10219.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10222.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10238.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10243.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10246.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10247.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10250.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/10270.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/anime-girl-night-5120x2880-25111.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/castorice-honkai-7680x4320-22114.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/hollow-knight-video-5120x2880-19937.jpg",
+  "https://raw.githubusercontent.com/jikokoutei/Gostlist/main/Wallpaper/mikasa-ackerman-5120x2880-10315.jpg",
 ];
 
 function id() {
@@ -20,8 +74,8 @@ function initialState() {
     id: id(),
     name: "Today",
     links: [
-      { id: id(), title: "Vite", url: "https://vite.dev" },
-      { id: id(), title: "React", url: "https://react.dev" },
+      { id: id(), title: "GITHUB", url: "https://github.com/avinashsinghkashyap3-sys" },
+      { id: id(), title: "IG", url: "https://www.instagram.com/_.avinash_singh_01" },
     ],
   };
 
@@ -35,7 +89,7 @@ function initialState() {
           {
             id: id(),
             name: "Research",
-            links: [{ id: id(), title: "MDN", url: "https://developer.mozilla.org" }],
+            links: [{ id: id(), title: "GH JIK", url: "https://github.com/jikokoutei" }],
           },
         ],
       },
@@ -54,6 +108,8 @@ function initialState() {
     activePageColor: "#7c3aed",
     linkButtonColor: "#8b5cf6",
     compactLinkCards: false,
+    customTheme: { ...defaultCustomTheme },
+    searchEngine: "google",
   };
 }
 
@@ -115,6 +171,34 @@ function wallpaperSource(url) {
   return isWallpaperDataUrl(value) ? value : normalizeUrl(value);
 }
 
+function wallpaperImageUrl(url) {
+  const source = wallpaperSource(url);
+  if (!source || isWallpaperDataUrl(source)) return source;
+  return encodeURI(source);
+}
+
+function cssUrl(value) {
+  return `url("${String(value).replaceAll("\\", "\\\\").replaceAll('"', '\\"')}")`;
+}
+
+function themeColor(value, fallback) {
+  const candidate = String(value || "").trim();
+  return /^#[0-9a-f]{6}$/i.test(candidate) ? candidate : fallback;
+}
+
+function customTheme() {
+  const savedTheme = state.customTheme || {};
+  return {
+    start: themeColor(savedTheme.start, defaultCustomTheme.start),
+    middle: themeColor(savedTheme.middle, defaultCustomTheme.middle),
+    end: themeColor(savedTheme.end, defaultCustomTheme.end),
+  };
+}
+
+function activeSearchEngine() {
+  return searchEngines.find((engine) => engine.id === state.searchEngine) || searchEngines[0];
+}
+
 function shortUrlLabel(url) {
   try {
     const parsed = new URL(normalizeUrl(url));
@@ -126,13 +210,30 @@ function shortUrlLabel(url) {
   }
 }
 
-function faviconUrl(url) {
+function faviconCandidates(url) {
   try {
     const parsed = new URL(normalizeUrl(url));
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=32`;
+    const host = parsed.hostname.replace(/^www\./i, "");
+    return [
+      `${parsed.origin}/favicon.ico`,
+      `https://icons.duckduckgo.com/ip3/${encodeURIComponent(parsed.hostname)}.ico`,
+      `https://icons.duckduckgo.com/ip3/${encodeURIComponent(host)}.ico`,
+      `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(parsed.origin)}&sz=64`,
+      `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=64`,
+    ];
   } catch {
-    return "";
+    return [];
   }
+}
+
+function faviconUrl(url) {
+  return faviconCandidates(url)[0] || "";
+}
+
+function fallbackFaviconUrl(label) {
+  const initial = (String(label).trim()[0] || "?").toUpperCase().replace(/[<&>"]/g, "") || "?";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#334155"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="30" font-weight="700">${initial}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
 function searchTarget(value) {
@@ -148,7 +249,7 @@ function searchTarget(value) {
     return normalizeUrl(term);
   }
 
-  return `https://www.google.com/search?q=${encodeURIComponent(term)}`;
+  return activeSearchEngine().url.replace("{query}", encodeURIComponent(term));
 }
 
 function activePage() {
@@ -173,19 +274,22 @@ function icon(name) {
 
 function render() {
   const page = activePage();
+  const userTheme = customTheme();
+  const searchEngine = activeSearchEngine();
   document.documentElement.style.setProperty("--active-color", state.activePageColor);
   document.documentElement.style.setProperty("--link-color", state.linkButtonColor);
+  document.documentElement.style.setProperty("--custom-theme-start", userTheme.start);
+  document.documentElement.style.setProperty("--custom-theme-middle", userTheme.middle);
+  document.documentElement.style.setProperty("--custom-theme-end", userTheme.end);
 
-  const wallpaperUrl = wallpaperSource(state.wallpaperUrl);
-  const wallpaperStyle = wallpaperUrl
-    ? `style="background-image:url('${wallpaperUrl.replaceAll("'", "%27")}')"`
-    : "";
+  const wallpaperUrl = wallpaperImageUrl(state.wallpaperUrl);
+  const wallpaperData = wallpaperUrl ? `data-wallpaper-src="${escapeAttribute(wallpaperUrl)}"` : "";
   const overlayWallpaper = state.wallpaperUrl ? `wallpaper-${state.wallpaperVisibility}` : "";
   const panelClass = ["visible", "pure"].includes(state.panelVisibility) ? state.panelVisibility : "";
 
   document.querySelector("#app").innerHTML = `
     <div class="shell">
-      <div class="wallpaper" ${wallpaperStyle}></div>
+      <div class="wallpaper" ${wallpaperData}></div>
       <div class="overlay ${themes[state.themeIndex] || themes[0]} ${overlayWallpaper}"></div>
       <div class="layout">
         <aside class="sidebar panel ${panelClass}">
@@ -207,9 +311,6 @@ function render() {
               .join("")}
           </div>
           <button class="secondary-button full" data-action="add-page">+ New page</button>
-          <button class="secondary-button full" data-action="restore-link" ${state.trash.length ? "" : "disabled"}>
-            Restore from trash (${state.trash.length})
-          </button>
           <div class="divider">
             <p class="section-label">To do</p>
             <form class="todo-form" data-form="todo">
@@ -236,7 +337,7 @@ function render() {
         </aside>
         <main class="main panel ${panelClass}">
           <form class="toolbar" data-form="web-search">
-            <input id="search" name="search" autocomplete="off" placeholder="Search Google or type a URL" />
+            <input id="search" name="search" autocomplete="off" placeholder="Search ${escapeAttribute(searchEngine.name)} or type a URL" />
             <button class="secondary-button" type="submit">Search</button>
             <button class="secondary-button" type="button" data-action="add-board">+ Board</button>
             <button class="primary-button" type="button" data-action="open-add-link" ${page.boards.length ? "" : "disabled"}>+ Link</button>
@@ -274,11 +375,7 @@ function renderBoard(page, board) {
                   (link) => `
                     <div class="link-card ${compactLinks ? "compact" : ""}" draggable="true" data-link-id="${link.id}" data-board-id="${board.id}">
                       <a class="link-main" href="${escapeAttribute(normalizeUrl(link.url))}" title="${escapeAttribute(link.title)}" target="_blank" rel="noreferrer">
-                        ${
-                          compactLinks
-                            ? `<img class="link-favicon" src="${escapeAttribute(faviconUrl(link.url))}" alt="" loading="lazy" />`
-                            : ""
-                        }
+                        <img class="link-favicon" src="${escapeAttribute(faviconUrl(link.url))}" data-favicon-candidates="${escapeAttribute(JSON.stringify(faviconCandidates(link.url)))}" data-fallback-src="${escapeAttribute(fallbackFaviconUrl(link.title || link.url))}" alt="" loading="lazy" referrerpolicy="no-referrer" />
                         <span>${escapeHtml(link.title)}</span>
                       </a>
                       ${compactLinks ? "" : `<p class="link-url" title="${escapeAttribute(link.url)}">${escapeHtml(shortUrlLabel(link.url))}</p>`}
@@ -294,6 +391,10 @@ function renderBoard(page, board) {
 }
 
 function bindEvents() {
+  bindFaviconFallbacks();
+  bindWallpaperBackground();
+  bindWallpaperPreviews();
+
   document.querySelectorAll("[data-action]").forEach((element) => {
     element.addEventListener("click", handleAction);
   });
@@ -332,6 +433,69 @@ function bindEvents() {
         moveLink(draggedLink.boardId, targetBoardId, draggedLink.linkId);
         draggedLink = null;
       }
+    });
+  });
+}
+
+function bindFaviconFallbacks() {
+  document.querySelectorAll(".link-favicon").forEach((image) => {
+    image.addEventListener("load", () => {
+      image.classList.add("loaded");
+      image.classList.remove("failed");
+    });
+    image.addEventListener("error", () => {
+      let candidates = [];
+      try {
+        candidates = JSON.parse(image.dataset.faviconCandidates || "[]");
+      } catch {
+        candidates = [];
+      }
+
+      const currentSrc = image.getAttribute("src") || "";
+      const nextCandidate = candidates.find((candidate) => candidate && candidate !== currentSrc && candidate !== image.src);
+      if (nextCandidate) {
+        image.dataset.faviconCandidates = JSON.stringify(candidates.slice(candidates.indexOf(nextCandidate) + 1));
+        image.setAttribute("src", nextCandidate);
+        return;
+      }
+
+      const fallback = image.dataset.fallbackSrc || "";
+      if (fallback && image.getAttribute("src") !== fallback) {
+        image.setAttribute("src", fallback);
+        return;
+      }
+
+      image.classList.add("failed");
+    });
+  });
+}
+
+function bindWallpaperBackground() {
+  const background = document.querySelector(".wallpaper");
+  const url = background && background.dataset.wallpaperSrc;
+  if (!background || !url) return;
+
+  background.classList.remove("loaded", "failed");
+  const image = new Image();
+  image.addEventListener("load", () => {
+    background.style.backgroundImage = cssUrl(url);
+    background.classList.add("loaded");
+  });
+  image.addEventListener("error", () => {
+    background.classList.add("failed");
+  });
+  image.src = url;
+}
+
+function bindWallpaperPreviews() {
+  document.querySelectorAll(".wallpaper-preview").forEach((image) => {
+    image.addEventListener("load", () => {
+      image.closest(".wallpaper-button")?.classList.add("loaded");
+    });
+    image.addEventListener("error", () => {
+      const button = image.closest(".wallpaper-button");
+      button?.classList.add("failed");
+      image.remove();
     });
   });
 }
@@ -613,6 +777,7 @@ function openSettings() {
   const uploadedWallpaper = isWallpaperDataUrl(state.wallpaperUrl);
   const wallpaperInputValue = uploadedWallpaper ? "" : state.wallpaperUrl;
   const wallpaperPlaceholder = uploadedWallpaper ? "Uploaded image selected" : "https://example.com/wallpaper.jpg";
+  const userTheme = customTheme();
 
   openModal(`
     <div class="modal">
@@ -624,10 +789,39 @@ function openSettings() {
             ${themes
               .map(
                 (theme, index) =>
-                  `<button class="theme-button ${state.themeIndex === index ? "active" : ""} ${theme}" data-setting="theme" data-value="${index}" title="Theme ${index + 1}"></button>`
+                  `<button class="theme-button ${state.themeIndex === index ? "active" : ""} ${theme}" data-setting="theme" data-value="${index}" title="${themeLabels[index]}"><span>${themeLabels[index]}</span></button>`
               )
               .join("")}
           </div>
+        </section>
+        <section class="settings-section">
+          <p class="section-label">Customize theme</p>
+          <div class="color-grid">
+            <label class="field-label">Top<input type="color" data-setting="customThemeColor" data-color-stop="start" value="${escapeAttribute(userTheme.start)}" /></label>
+            <label class="field-label">Middle<input type="color" data-setting="customThemeColor" data-color-stop="middle" value="${escapeAttribute(userTheme.middle)}" /></label>
+            <label class="field-label">Bottom<input type="color" data-setting="customThemeColor" data-color-stop="end" value="${escapeAttribute(userTheme.end)}" /></label>
+          </div>
+          <div class="button-row">
+            <button class="primary-button" data-setting="applyCustomTheme">Use custom theme</button>
+            <button class="secondary-button" data-setting="resetCustomTheme">Reset colors</button>
+          </div>
+        </section>
+        <section class="settings-section">
+          <p class="section-label">Search engine</p>
+          <select class="settings-select" data-setting="searchEngine">
+            ${searchEngines
+              .map(
+                (engine) =>
+                  `<option value="${engine.id}" ${activeSearchEngine().id === engine.id ? "selected" : ""}>${engine.name}</option>`
+              )
+              .join("")}
+          </select>
+        </section>
+        <section class="settings-section">
+          <p class="section-label">Trash</p>
+          <button class="toggle-button" data-setting="restoreTrash" ${state.trash.length ? "" : "disabled"}>
+            Restore latest bookmark (${state.trash.length})
+          </button>
         </section>
         <section class="settings-section">
           <p class="section-label">Board move</p>
@@ -666,7 +860,10 @@ function openSettings() {
             ${wallpapers
               .map(
                 (url, index) =>
-                  `<button class="wallpaper-button" data-setting="wallpaperPreset" data-value="${url}" style="background-image:linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url('${url}')">Preset ${index + 1}</button>`
+                  `<button class="wallpaper-button ${state.wallpaperUrl === url ? "active" : ""}" data-setting="wallpaperPreset" data-value="${escapeAttribute(url)}">
+                    <img class="wallpaper-preview" src="${escapeAttribute(wallpaperImageUrl(url))}" alt="" loading="lazy" referrerpolicy="no-referrer" />
+                    <span>Preset ${index + 1}</span>
+                  </button>`
               )
               .join("")}
           </div>
@@ -686,8 +883,15 @@ function openSettings() {
   `);
 
   document.querySelectorAll("[data-setting]").forEach((element) => {
+    if (element.matches('input[type="color"]')) {
+      element.addEventListener("input", handleSetting);
+      return;
+    }
+    if (element.matches("select")) {
+      element.addEventListener("change", handleSetting);
+      return;
+    }
     element.addEventListener("click", handleSetting);
-    element.addEventListener("input", handleSetting);
   });
   document.querySelector("[data-wallpaper-upload]").addEventListener("change", handleWallpaperUpload);
 }
@@ -695,23 +899,46 @@ function openSettings() {
 function handleSetting(event) {
   const target = event.currentTarget;
   const setting = target.dataset.setting;
+  const keepModalOpen = target.matches('input[type="color"], select');
 
   if (setting === "theme") state.themeIndex = Number(target.dataset.value);
+  if (setting === "searchEngine") state.searchEngine = target.value;
+  if (setting === "restoreTrash") {
+    restoreLink();
+    closeModal();
+    return;
+  }
+  if (setting === "applyCustomTheme") state.themeIndex = customThemeIndex;
+  if (setting === "resetCustomTheme") {
+    state.customTheme = { ...defaultCustomTheme };
+    state.themeIndex = customThemeIndex;
+  }
   if (setting === "boardReorder") state.boardReorderEnabled = !state.boardReorderEnabled;
   if (setting === "compactLinkCards") state.compactLinkCards = !state.compactLinkCards;
   if (setting === "panelVisibility") state.panelVisibility = target.dataset.value;
   if (setting === "wallpaperVisibility") state.wallpaperVisibility = target.dataset.value;
   if (setting === "activePageColor") state.activePageColor = target.value;
   if (setting === "linkButtonColor") state.linkButtonColor = target.value;
-  if (setting === "wallpaperPreset") state.wallpaperUrl = target.dataset.value;
+  if (setting === "customThemeColor") {
+    const colorStop = target.dataset.colorStop;
+    state.customTheme = {
+      ...customTheme(),
+      [colorStop]: themeColor(target.value, defaultCustomTheme[colorStop] || defaultCustomTheme.middle),
+    };
+  }
+  if (setting === "wallpaperPreset") {
+    state.wallpaperUrl = target.dataset.value;
+    state.wallpaperVisibility = "pure";
+  }
   if (setting === "applyWallpaper") {
     const input = document.querySelector('[data-setting-input="wallpaperUrl"]');
     state.wallpaperUrl = input.value.trim();
+    state.wallpaperVisibility = "pure";
   }
   if (setting === "removeWallpaper") state.wallpaperUrl = "";
 
   saveState();
-  closeModal();
+  if (!keepModalOpen) closeModal();
   render();
 }
 

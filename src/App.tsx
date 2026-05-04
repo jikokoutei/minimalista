@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, SyntheticEvent, useEffect, useMemo, useState } from "react";
 
 type LinkItem = {
   id: string;
@@ -128,14 +128,14 @@ const initialPages: Page[] = [
         id: crypto.randomUUID(),
         name: "Today",
         links: [
-          { id: crypto.randomUUID(), title: "Vite", url: "https://vite.dev" },
-          { id: crypto.randomUUID(), title: "React", url: "https://react.dev" },
+          { id: crypto.randomUUID(), title: "GITHUB", url: "https://github.com/avinashsinghkashyap3-sys" },
+          { id: crypto.randomUUID(), title: "IG", url: "https://www.instagram.com/_.avinash_singh_01" },
         ],
       },
       {
         id: crypto.randomUUID(),
         name: "Research",
-        links: [{ id: crypto.randomUUID(), title: "MDN", url: "https://developer.mozilla.org" }],
+        links: [{ id: crypto.randomUUID(), title: "GH JIK", url: "https://github.com/jikokoutei" }],
       },
     ],
   },
@@ -177,6 +177,29 @@ function ensureHttpUrl(url: string): string {
   const value = url.trim();
   if (!value) return "#";
   return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
+
+function faviconUrl(url: string): string {
+  try {
+    const parsed = new URL(ensureHttpUrl(url));
+    return `https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(parsed.origin)}&sz=64`;
+  } catch {
+    return "";
+  }
+}
+
+function fallbackFaviconUrl(label: string): string {
+  const initial = (label.trim()[0] || "?").toUpperCase().replace(/[<&>"]/g, "") || "?";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#334155"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="30" font-weight="700">${initial}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+function handleFaviconError(event: SyntheticEvent<HTMLImageElement>) {
+  const image = event.currentTarget;
+  const fallback = image.dataset.fallbackSrc || "";
+  if (fallback && image.src !== fallback) {
+    image.src = fallback;
+  }
 }
 
 function moveBoard(pages: Page[], pageId: string, sourceBoardId: string, targetBoardId: string): Page[] {
@@ -692,10 +715,19 @@ export default function App() {
                       }}
                       className="group rounded-lg border border-white/15 bg-black/20 p-2 transition-all duration-200 hover:-translate-y-0.5 hover:bg-black/35"
                     >
-                      <a href={ensureHttpUrl(link.url)} target="_blank" rel="noreferrer" className="block text-sm font-medium text-slate-100">
-                        {link.title}
+                      <a href={ensureHttpUrl(link.url)} target="_blank" rel="noreferrer" className="flex min-w-0 items-center gap-2 text-sm font-medium text-slate-100">
+                        <img
+                          src={faviconUrl(link.url)}
+                          data-fallback-src={fallbackFaviconUrl(link.title || link.url)}
+                          alt=""
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                          onError={handleFaviconError}
+                          className="h-[18px] w-[18px] shrink-0 rounded bg-white/10"
+                        />
+                        <span className="truncate">{link.title}</span>
                       </a>
-                      <p className="truncate text-xs text-slate-300">{link.url}</p>
+                      <p className="ml-[26px] truncate text-xs text-slate-300">{link.url}</p>
                       <button
                         onClick={() => removeLink(activePage.id, board.id, link)}
                         className="mt-2 text-xs text-rose-200 opacity-0 transition group-hover:opacity-100"
